@@ -78,13 +78,23 @@ app_ui = ui.page_fluid(
     ui.h3("ML UMAP"),
     ui.output_image("displayed_image5"),
 
+    # Add download button for file and dynamic status message
+    ui.download_button("downloadData1", "Download Processed CSV"),
+    ui.output_text("fileStatus1"),
     ui.tags.br(),
-    styled_button("downloadData1", "Download Processed CSV"),
-    ui.output_text("fileStatus_1"),
 
+    # Add download button for file and dynamic status message
+    ui.download_button("downloadData2", "Download DEG CSV"),
+    ui.output_text("fileStatus2"),
     ui.tags.br(),
-    styled_button("download_deg", "Download Differential Gene Expression List"),
-    ui.output_text("fileStatus_2"),
+
+    # ui.tags.br(),
+    # styled_button("downloadData1", "Download Processed CSV"),
+    # ui.output_text("fileStatus_1"),
+
+    # ui.tags.br(),
+    # styled_button("download_deg", "Download Differential Gene Expression List"),
+    # ui.output_text("fileStatus_2"),
 
     ui.tags.br(),
     ui.h3("Visualize Custom Gene-Specific UMAP"),
@@ -182,27 +192,27 @@ def server(input, output, session):
             file_ready.set(False)
         file_ready.set(True)
 
-    processed_csv_path = os.path.join("/app", "processed_data", "processed_matrix.csv")
-    deg_path = os.path.join("/app", "/processed_data", "all_degs.csv")
 
-    # Always render download button
-    @output
-    @render.download
-    def downloadData1():
-        if os.path.exists(processed_csv_path):
-            return processed_csv_path
-        else:
-            # If file doesn't exist, prevent download by returning None
-            return None
-    
+
+    # # Always render download button
+    # @output
+    # @render.download
+    # def downloadData1():
+    #     if os.path.exists(processed_csv_path):
+    #         return processed_csv_path
+    #     else:
+    #         # If file doesn't exist, prevent download by returning None
+    #         return None
+       # Always render download button
+
        
-    @output
-    @render.download
-    def download_deg():
-        path = resolve_deg_path()
-        if os.path.exists(path):
-            return path
-        return None
+    # @output
+    # @render.download
+    # def download_deg():
+    #     path = resolve_deg_path()
+    #     if os.path.exists(path):
+    #         return path
+    #     return None
 
 
 
@@ -296,16 +306,75 @@ def server(input, output, session):
     def reprocess_status():
         return "Press 'Recalculate QC' to apply new metrics."
 
-    @output
-    @render.text
-    def fileStatus_1():
-        return "✅ Processed CSV is ready for download." if file_ready() else "❌ Processed CSV not found yet. Run the analysis first."
+    # @output
+    # @render.text
+    # def fileStatus_1():
+    #     return "✅ Processed CSV is ready for download." if file_ready() else "❌ Processed CSV not found yet. Run the analysis first."
     
+    # @output
+    # @render.text
+    # def fileStatus_2():
+    #     return "✅ Differential Gene Expression list is ready for download." if file_ready() else "❌ DEG List not found yet. Run the analysis first."
+    processed_csv_path = os.path.join("/app", "processed_data", "processed_matrix.csv")
+    deg_path = os.path.join("/app", "processed_data", "all_degs.csv")
+   
+    @output
+    @render.download
+    def downloadData1():
+        if os.path.exists(processed_csv_path):
+            return processed_csv_path
+        else:
+            # If file doesn't exist, prevent download by returning None
+            return None
+    
+    file_ready1 = reactive.Value(False)
+
+
     @output
     @render.text
-    def fileStatus_2():
-        return "✅ Differential Gene Expression list is ready for download." if file_ready() else "❌ DEG List not found yet. Run the analysis first."
+    def fileStatus1():
+       if file_ready1():
+           return "✅ Processed CSV is ready for download."
+       else:
+           return "❌ Processed CSV not found yet. Run the analysis first."
 
+
+    @reactive.effect
+    @reactive.event(input.activate_button_ui)
+    def check_csv_file1():
+       if os.path.exists(processed_csv_path):
+           file_ready1.set(True)
+       else:
+           file_ready1.set(False)
+
+    @output
+    @render.download
+    def downloadData2():
+        if os.path.exists(deg_path):
+            return deg_path
+        else:
+            # If file doesn't exist, prevent download by returning None
+            return None
+    
+    file_ready2 = reactive.Value(False)
+
+
+    @output
+    @render.text
+    def fileStatus2():
+       if file_ready2():
+           return "✅ Processed CSV is ready for download."
+       else:
+           return "❌ Processed CSV not found yet. Run the analysis first."
+
+
+    @reactive.effect
+    @reactive.event(input.activate_button_ui)
+    def check_csv_file2():
+       if os.path.exists(deg_path):
+           file_ready2.set(True)
+       else:
+           file_ready2.set(False)
 
     @reactive.effect
     @reactive.event(input.reprocess_button)
