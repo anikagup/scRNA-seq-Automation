@@ -270,36 +270,95 @@ def server(input, output, session):
     def displayed_image5():
         image_path = os.path.join(project_root, '..', 'figures', 'umapML_umap.png')
         return {"src": image_path, "height": "400px"} if file_ready() and os.path.exists(image_path) else None
+    
+    gene_status_text = reactive.Value("")
+    @reactive.effect
+    @reactive.event(input.update_umap)
+    def generate_custom_umap():
+        gene = input.gene_input().strip()
 
+        if not gene:
+            gene_status_text.set("❌ Please enter a gene name.")
+            return
+
+        try:
+            # Load and update the config
+            with open(config_path, "r") as f:
+                config = json.load(f)
+
+            config["visualization"]["custom_genes"] = gene
+
+            with open(config_path, "w") as f:
+                json.dump(config, f, indent=4)
+
+            # Run the analysis script
+            subprocess.run(["python", "/app/src/main.py"], check=True)
+
+            # Check for the resulting image
+            image_path = os.path.join(project_root, '..', 'figures', 'umap_custom_gene.png')
+            if os.path.exists(image_path):
+                gene_status_text.set("✅ Gene UMAP generated.")
+            else:
+                gene_status_text.set("❌ Gene not found or image not generated.")
+        except Exception as e:
+            gene_status_text.set(f"❌ Error: {e}")
+
+        image_path = os.path.join(project_root, '..', 'figures', 'umap_custom_gene.png')
+        if os.path.exists(image_path):
+            gene_status_text.set("✅ Gene UMAP generated.")
+        else:
+            gene_status_text.set("❌ Gene not found or processing failed.")
+
+
+
+
+    # --- Display UMAP Image ---
     @output
     @render.image
     @reactive.event(input.update_umap)
     def displayed_image6():
-        with open(config_path, "r") as f:
-            config = json.load(f)
-        config["visualization"]["custom_genes"] = input.gene_input()
-        with open(config_path, "w") as f:
-            json.dump(config, f, indent=4)
-        upload_path = os.path.join("/app", 'figures', 'umap_custom_gene.png')
-        print(upload_path)
-
-        if os.path.exists(upload_path):
-            os.remove(upload_path)
-        
-        subprocess.run(["python", "/app/src/main.py"], check=True)
-        
-
-        @output
-        @render.text
-        def gene_status():
-            return None
-
         image_path = os.path.join(project_root, '..', 'figures', 'umap_custom_gene.png')
         if os.path.exists(image_path):
-            return {"src": image_path, "height": "400px"}  # Return image with height setting
-        else: 
-            return "❌ Gene not found in the dataset for custom UMAP."
-        #return None  # Return None if image is not found
+            return {"src": image_path, "height": "400px"}
+        else:
+            return None  # Ensure this is None if the image doesn't exist.
+    # @output
+    # @render.image
+    # @reactive.event(input.update_umap)
+    # def displayed_image6():
+    #     image_path = os.path.join(project_root, '..', 'figures', 'umap_custom_gene.png')
+    #     return {"src": image_path, "height": "400px"} if os.path.exists(image_path) else None
+
+
+    # @output
+    # @render.image
+    # @reactive.event(input.update_umap)
+    # def displayed_image6():
+    #     with open(config_path, "r") as f:
+    #         config = json.load(f)
+    #     config["visualization"]["custom_genes"] = input.gene_input()
+    #     with open(config_path, "w") as f:
+    #         json.dump(config, f, indent=4)
+    #     upload_path = os.path.join("/app", 'figures', 'umap_custom_gene.png')
+    #     print(upload_path)
+
+    #     if os.path.exists(upload_path):
+    #         os.remove(upload_path)
+        
+    #     subprocess.run(["python", "/app/src/main.py"], check=True)
+        
+
+    #     @output
+    #     @render.text
+    #     def gene_status():
+    #         return None
+
+    #     image_path = os.path.join(project_root, '..', 'figures', 'umap_custom_gene.png')
+    #     if os.path.exists(image_path):
+    #         return {"src": image_path, "height": "400px"}  # Return image with height setting
+    #     else: 
+    #         return "❌ Gene not found in the dataset for custom UMAP."
+    #     #return None  # Return None if image is not found
 
     @output
     @render.text
