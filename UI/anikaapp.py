@@ -275,6 +275,10 @@ def server(input, output, session):
     @reactive.effect
     @reactive.event(input.update_umap)
     def generate_custom_umap():
+        image_path = os.path.join(project_root, '..', 'figures', 'umap_custom_gene.png')
+
+        if os.path.exists(image_path):
+            os.remove(image_path)
         gene = input.gene_input().strip()
 
         if not gene:
@@ -322,6 +326,11 @@ def server(input, output, session):
             return {"src": image_path, "height": "400px"}
         else:
             return None  # Ensure this is None if the image doesn't exist.
+    
+    @output
+    @render.text
+    def gene_status():
+        return gene_status_text()
     # @output
     # @render.image
     # @reactive.event(input.update_umap)
@@ -422,9 +431,9 @@ def server(input, output, session):
     @render.text
     def fileStatus2():
        if file_ready2():
-           return "✅ Processed CSV is ready for download."
+           return "✅ Differential Gene Expression list is ready for download."
        else:
-           return "❌ Processed CSV not found yet. Run the analysis first."
+           return "❌ Differential Gene Expression list is not found yet. Run the analysis first."
 
 
     @reactive.effect
