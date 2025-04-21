@@ -9,6 +9,7 @@ data/*.h5ad
 data/*.csv
 figures
 data
+processed_data
 
 # Ignore Python cache
 __pycache__/
