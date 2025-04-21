@@ -88,13 +88,6 @@ app_ui = ui.page_fluid(
     ui.output_text("fileStatus2"),
     ui.tags.br(),
 
-    # ui.tags.br(),
-    # styled_button("downloadData1", "Download Processed CSV"),
-    # ui.output_text("fileStatus_1"),
-
-    # ui.tags.br(),
-    # styled_button("download_deg", "Download Differential Gene Expression List"),
-    # ui.output_text("fileStatus_2"),
 
     ui.tags.br(),
     ui.h3("Visualize Custom Gene-Specific UMAP"),
@@ -191,30 +184,6 @@ def server(input, output, session):
             print(f"❌ DEG list not found at {deg_path}")
             file_ready.set(False)
         file_ready.set(True)
-
-
-
-    # # Always render download button
-    # @output
-    # @render.download
-    # def downloadData1():
-    #     if os.path.exists(processed_csv_path):
-    #         return processed_csv_path
-    #     else:
-    #         # If file doesn't exist, prevent download by returning None
-    #         return None
-       # Always render download button
-
-       
-    # @output
-    # @render.download
-    # def download_deg():
-    #     path = resolve_deg_path()
-    #     if os.path.exists(path):
-    #         return path
-    #     return None
-
-
 
     @output
     @render.image
@@ -331,58 +300,14 @@ def server(input, output, session):
     @render.text
     def gene_status():
         return gene_status_text()
-    # @output
-    # @render.image
-    # @reactive.event(input.update_umap)
-    # def displayed_image6():
-    #     image_path = os.path.join(project_root, '..', 'figures', 'umap_custom_gene.png')
-    #     return {"src": image_path, "height": "400px"} if os.path.exists(image_path) else None
 
 
-    # @output
-    # @render.image
-    # @reactive.event(input.update_umap)
-    # def displayed_image6():
-    #     with open(config_path, "r") as f:
-    #         config = json.load(f)
-    #     config["visualization"]["custom_genes"] = input.gene_input()
-    #     with open(config_path, "w") as f:
-    #         json.dump(config, f, indent=4)
-    #     upload_path = os.path.join("/app", 'figures', 'umap_custom_gene.png')
-    #     print(upload_path)
-
-    #     if os.path.exists(upload_path):
-    #         os.remove(upload_path)
-        
-    #     subprocess.run(["python", "/app/src/main.py"], check=True)
-        
-
-    #     @output
-    #     @render.text
-    #     def gene_status():
-    #         return None
-
-    #     image_path = os.path.join(project_root, '..', 'figures', 'umap_custom_gene.png')
-    #     if os.path.exists(image_path):
-    #         return {"src": image_path, "height": "400px"}  # Return image with height setting
-    #     else: 
-    #         return "❌ Gene not found in the dataset for custom UMAP."
-    #     #return None  # Return None if image is not found
 
     @output
     @render.text
     def reprocess_status():
         return "Press 'Recalculate QC' to apply new metrics."
 
-    # @output
-    # @render.text
-    # def fileStatus_1():
-    #     return "✅ Processed CSV is ready for download." if file_ready() else "❌ Processed CSV not found yet. Run the analysis first."
-    
-    # @output
-    # @render.text
-    # def fileStatus_2():
-    #     return "✅ Differential Gene Expression list is ready for download." if file_ready() else "❌ DEG List not found yet. Run the analysis first."
     processed_csv_path = os.path.join("/app", "processed_data", "processed_matrix.csv")
     deg_path = os.path.join("/app", "processed_data", "all_degs.csv")
    
