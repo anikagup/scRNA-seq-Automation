@@ -4,6 +4,7 @@ venv/
 *.log
 *.csv
 *.tsv
+uploads
 # Ignore data files
 data/*.h5ad
 data/*.csv
