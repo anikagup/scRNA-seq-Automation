@@ -4,7 +4,7 @@
 2. docker-compose up -d 
 3. Paste "http://localhost:8000/" into browser and upload file to test 
 4. If met with errors, paste "docker-compose logs frontend" into terminal and evaluate output 
-5. To run code in Docker temporary environment, paste "docker exec -it scrna-frontend bash" into terminal and run "shiny run UI/anikaapp.py"
+5. To run code in Docker temporary environment, paste "docker exec -it scrna-frontend bash" into terminal and run "shiny run UI/app.py"
 
 
 # scRNA-seq-Automation
@@ -13,7 +13,7 @@ pip install -r requirements.txt
 
 python src/main.py
 
-shiny run UI/anikaapp.py
+shiny run UI/app.py
 
 docker-compose build --no-cache
 after this, you need to run "docker-compose up -d" to actually start the docker

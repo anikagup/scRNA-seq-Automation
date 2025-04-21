@@ -21,6 +21,6 @@ services:
       - ./uploads:/app/uploads
       - ./figures:/app/figures
       - ./UI:/app/UI
-    command: ["shiny", "run", "--host", "0.0.0.0", "--port", "8000", "UI/anikaapp.py"]
+    command: ["shiny", "run", "--host", "0.0.0.0", "--port", "8000", "UI/app.py"]
     depends_on:
       - backend
