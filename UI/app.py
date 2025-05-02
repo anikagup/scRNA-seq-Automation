@@ -99,9 +99,6 @@ app_ui = ui.page_fluid(
 )
 
 uploaded_path = reactive.Value(None)
-# def resolve_deg_path():
-#     # Absolute path to the DEG file in the container
-#     return os.path.abspath("/app/processed_data/all_degs.csv")
 
 def server(input, output, session):
     uploaded_path.set(None)

@@ -1,3 +1,6 @@
+## About This Repository
+Hi! We are Anika, Tara, and Erik, 3 Biomedical Engineering Seniors at USC. This repository is our senior design project: an automated sc-RNA sequencing web application designed for researchers who have no coding experience. Please feel free to contact us at anikagup@usc.edu (Anika), taranate@usc.edu (Tara), and noyman@usc.edu (Erik), with any questions, comments, or concerns!
+
 ## To Run App Through Docker
 1. Download the Docker Desktop from here: https://www.docker.com/products/docker-desktop/
 2. Install Git here from: https://git-scm.com/downloads
