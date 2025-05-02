@@ -1,4 +1,19 @@
 ## To Run App Through Docker
+1. Download the Docker Desktop from here: https://www.docker.com/products/docker-desktop/
+2. Install Git here from: https://git-scm.com/downloads
+3. Clone the Github repository in the local computer’s terminal/command prompt by running each command once, separately: 
+git clone https://github.com/anikagup/scRNA-seq-Automation.git
+cd scRNA-seq-Automation
+4. Start the app by running: docker-compose up --build
+5. Paste this link in your browser to run the app: http://localhost:8000
+6. Upload a supported .h5ad, .csv, .h5, .loom, or .fastq file.
+7. Click Run Analysis to start preprocessing and visualization.
+8. Adjust QC parameters and click Reprocess to regenerate figures.
+9. Enter a gene you know is in your dataset and click Generate UMAP to view expression patterns.
+10. Download the Processed CSV or DEG List using the provided buttons.
+11. To stop the app when you are done, first Press Ctrl C, then run 
+docker-compose down
+
 0. Check that no virtual environment (venv) of any kind is running, you want to see the name of your computer as the first thing in the terminal 
 1. docker-compose build --no-cache 
 2. docker-compose up -d 
