@@ -14,12 +14,11 @@ cd scRNA-seq-Automation
 11. To stop the app when you are done, first Press Ctrl C, then run 
 docker-compose down
 
-0. Check that no virtual environment (venv) of any kind is running, you want to see the name of your computer as the first thing in the terminal 
-1. docker-compose build --no-cache 
-2. docker-compose up -d 
-3. Paste "http://localhost:8000/" into browser and upload file to test 
+Important notes:
+1.  Check that no virtual environment (venv) of any kind is running, you want to see the name of your computer as the first thing in the terminal 
+2. docker-compose build --no-cache # build and save space
+3. docker-compose up -d # to run app after build
 4. If met with errors, paste "docker-compose logs frontend" into terminal and evaluate output 
-5. To run code in Docker temporary environment, paste "docker exec -it scrna-frontend bash" into terminal and run "shiny run UI/app.py"
 
 
 # scRNA-seq-Automation
