@@ -62,7 +62,7 @@ def user_umap(adata, params):
     print(f"✅ User-defined UMAP generated for: {valid_genes}")
 
 def prediction_umap(adata, config):
-    sc.pl.umap(adata, color="Classifier_predictions", save=f"ML_umap.png", show=False)
+    sc.pl.umap(adata, color="Classifier_FINAL", save=f"ML_umap.png", show=False)
     print(f"ML-classified plot is done!")
 
 # Function to perform differential gene expression analysis
